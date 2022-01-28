@@ -1,81 +1,58 @@
-class Fibo{
-    private int n=1,a=-1,b=1,c;
-    synchronized void disp(){
-        for(int i=1;i<=50;i++){
-            c=a+b;
-            System.out.println(n+" Fibonacci Number : "+c);
-            a=b;
-            b=c;
-            if(n==30)
-                try{
-                    System.out.println("Fibonacci Number Generation Halted.");
-                    Thread.sleep(5000);
-                }catch(InterruptedException e){
-                    System.out.println("Caught interrupted exception!");
-                }
-            n++;
-        }
+import java.util.*;
+class Tax{
+    double salary;
+    public double taxrRate(double salary){
+        return(0);
     }
 }
-class Natural{
-    int n=1;
-    boolean isNatural=true;
-    synchronized void disp(){
-        try{
-            Thread.sleep(5000);
-        }catch(InterruptedException e){
-            System.out.println("Caught interrupted exception!");
-        }
-        for(int i=1;i<=15;i++){
-            System.out.println(n+" Natural number: "+i);
-            n++;
-        }
-        /*for(int i=2;;i++){
-            for(int j=2;j<=i/2;j++){
-                if((i%j)==0){
-                    isNatural = false;
-                    break;
-                }
-            }
-            if(isNatural){
-                System.out.println(n+" Natural : "+i);
-                n++;
-                if(n==15){
-                    break;
-                }
-            }
-        }*/
+class Cat1 extends Tax{
+    public double taxrRate(double salary){
+        return(0.1*(salary-200000));
     }
 }
-class NaturalThread implements Runnable{
-    Thread t;
-    Natural n1;
-    NaturalThread(){
-        t=new Thread(this);
-        t.setPriority(Thread.NORM_PRIORITY);
-        t.start();
-    }
-    public void run(){
-        n1=new Natural();
-        n1.disp();
+class Cat2 extends Tax{
+    public double taxrRate(double salary){
+        return(0.2*(salary-300000)+(10000));
     }
 }
-class FiboThread implements Runnable{
-    Thread t2;
-    Fibo f;
-    FiboThread(){
-        t2=new Thread(this);
-        t2.setPriority(9);
-        t2.start();
+class Cat3 extends Tax{
+    public double taxrRate(double salary){
+        return(0.3*(salary-500000)+50000);
     }
-    public void run(){
-        f=new Fibo();
-        f.disp();
+}
+class Cat4 extends Tax{
+    public double taxrRate(double salary){
+        return(0.4*(salary-1000000)+200000);
     }
 }
 class q3{
-    public static void main(String args[]){
-        FiboThread ft=new FiboThread();
-        NaturalThread pt=new NaturalThread();
+    public static void main(String[] arg){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Salary Amount: ");
+        double income = sc.nextDouble();
+        if(income!=0){
+        if(income<= 200000){
+            Tax t = new Tax();
+            calc(t, income);
+        }else if(income<=300000){
+            Cat1 t = new Cat1();
+            calc(t, income);
+        }else if(income<= 500000){
+            Cat2 t = new Cat2();
+            calc(t, income);
+        }else if(income<=1000000){
+            Cat3 t = new Cat3();
+            calc(t, income);
+        }else{
+            Cat4 t = new Cat4();
+            calc(t, income);
+        }
+        
+        }
+    }
+    public static void calc(Tax t, double income){
+        t.salary=income;
+        double p = t.taxrRate(income);
+        System.out.println("Income Tax Amount = Rs. "+p+" /-");
     }
 }

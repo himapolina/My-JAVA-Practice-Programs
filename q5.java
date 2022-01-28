@@ -1,64 +1,52 @@
+import vit.University;
+import vit.btech.Classes;
 import java.util.*;
-public class q5{
-    public static void main(String[] arg) throws InterruptedException{
-        final PC pc= new PC();
-        Thread t1 = new Thread(new Runnable(){
-            @Override
-            public void run(){
-                try{
-                    pc.produce();
-                }
-                catch(InterruptedException e){
-                    e.printStackTrace();
-                }
+class q5{
+    public static void main(String[] arg){
+        Scanner sc = new Scanner(System.in);
+        int scopeStudents = 12000;
+        int siteStudents = 10000;
+        int one = 5192;
+        int two = 5201;
+        int three = 4908;
+        int four = 5023;
+        System.out.println("---Number of Students already added---");
+        System.out.println("SCOPE = "+scopeStudents);
+        System.out.println("SITE = "+siteStudents);
+        System.out.println("First Year = "+one);
+        System.out.println("Second Year = "+two);
+        System.out.println("Third Year = "+three);
+        System.out.println("Fourth Year = "+four+"\n");
+        System.out.println("Enter number of students you want to add: ");
+        int n = sc.nextInt();
+        University school = new University();
+        for(int i=0;i<n;i++){
+            System.out.println("\n Enter details of Student "+(i+1)+"\n");
+            System.out.println(" Enter school of student    1. SCOPE     2. SITE  : ");
+            int s=sc.nextInt();
+            
+            if(s==1){
+                scopeStudents = school.countScope(scopeStudents);
+                System.out.println(" Student Added! Total students in SCOPE = "+scopeStudents);
+            }else if(s==2){
+                siteStudents = school.countSite(siteStudents);
+                System.out.println(" Student Added! Total students in SITE = "+siteStudents);
             }
-        });
-        Thread t2 = new Thread(new Runnable(){
-            @Override
-            public void run(){
-                try{
-                    pc.consume();
-                }
-                catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-        });
-        t1.start();
-        t2.start();
-        t1.join();
-        t2.join();
-    }
-    public static class PC{
-        LinkedList<Integer> list = new LinkedList<>();
-        int capacity=10;
-        public void produce() throws InterruptedException{
-            int value=0;
-            while(true){
-                synchronized(this)
-                {
-                    while (list.size()==capacity){
-                    wait();
-                    }
-                    System.out.println("Mother prepared "+value+" chapathis.");
-                    list.add(value++);
-                    notify();
-                    Thread.sleep(1000);
-                    
-                }
-            }
-        }
-        public void consume() throws InterruptedException{
-            while(true){
-                synchronized(this){
-                    while (list.size()==0){
-                    wait();}
-                    int val=list.removeFirst();
-                    System.out.println("Kids ate "+val+" chapathis.");
-                    notify();
-                    Thread.sleep(1000);
-                    
-                }
+            System.out.println("\n Enter year of study of student   1 or 2 or 3 or 4 : ");
+            int year = sc.nextInt();
+            Classes c = new Classes();
+            if(year==1){
+                one = c.first(one);
+                System.out.println("Student Added! Total students in 1st year = "+one);
+            }else if(year==2){
+                two = c.second(two);
+                System.out.println("Student Added! Total students in 2nd year = "+two);
+            }else if(year==3){
+                three = c.third(three);
+                System.out.println("Student Added! Total students in 3rd year = "+three);
+            }else if(year==4){
+                four = c.fourth(four);
+                System.out.println("Student Added! Total students in 4th year = "+four);
             }
         }
     }
